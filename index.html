@@ -56,6 +56,11 @@
             <input type="range" min="0" max="100" value="50" id="volume" class="w-[75%]" oninput="changeVolume()">
         </div>
 
+        <div class="flex gap-4 p-4 w-full items-center justify-center">
+            <p class="font-bold" id="speed-label">X1</p>
+            <input type="range" min="0" max="6" value="3" step="1" id="speed" class="w-[75%]" oninput="changeSpeed()">
+        </div>
+
         <div id="controls" class="w-full flex items-center p-4">
             <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()"
                 preload="metadata" onended="nextSong()">

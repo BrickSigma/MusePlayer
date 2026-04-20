@@ -16,6 +16,9 @@ const time = document.getElementById('time')
 const slider = document.getElementById('slider')
 const duration = document.getElementById('duration')
 
+const speed = document.getElementById('speed')
+const speedLabel = document.getElementById('speed-label')
+
 const playIcon = `
 <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
     <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/>
@@ -100,6 +103,7 @@ function filesChanged() {
     nowPlaying.innerHTML = `Now playing: ${songs[0].name}`
 
     audioController.setAttribute('src', songs[0].url);
+    audioController.pause()
     songNo = 0
 }
 
@@ -143,9 +147,8 @@ function shuffle() {
 
 function seekBack() {
     if (audioController.currentTime < 3) {
-        songNo = (--songNo) % songs.length
+        songNo = (--songNo + songs.length) % songs.length
         audioController.setAttribute('src', songs[songNo].url);
-        audioController.play()
         loadUI()
     } else {
         audioController.currentTime = 0;
@@ -154,8 +157,7 @@ function seekBack() {
 
 function seekForward() {
     songNo = (++songNo) % songs.length
-    audioController.setAttribute('src', songs[songNo].url);
-    audioController.play()
+    audioController.src = songs[songNo].url;
     loadUI()
 }
 
@@ -213,4 +215,57 @@ function mute() {
         volumeIcon.innerHTML = volumeMuteIcon
         audioController.volume = 0
     }
+}
+
+function seekDiff(diff) {
+    slider.value = Number(slider.value) + Number(diff)
+    if (slider.value < 0) {
+        slider.value = 0
+    } else if (slider.value > audioController.duration) {
+        slider.value = Number(audioController.duration)
+    }
+    seek()
+}
+
+function volumeDiff(diff) {
+    volumeController.value = Number(volumeController.value) + Number(diff)
+    if (volumeController.value < 0) {
+        volumeController.value = 0
+    } else if (volumeController.value > 100) {
+        slider.value = 100
+    }
+    changeVolume()
+}
+
+// Keyboard event handling
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case "ArrowLeft":
+            seekDiff(-5)
+            break
+        case "ArrowRight":
+            seekDiff(5)
+            break
+        case "ArrowUp":
+            event.preventDefault()
+            volumeDiff(10)
+            break
+        case "ArrowDown":
+            event.preventDefault()
+            volumeDiff(-10)
+            break
+    }
+})
+
+function changeSpeed() {
+    const speeds = [
+        0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0
+    ]
+
+    let index = Number(speed.value)
+    console.log(speeds[index])
+
+    audioController.playbackRate = speeds[index]
+
+    speedLabel.innerHTML = `X ${speeds[index]}`
 }
