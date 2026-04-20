@@ -14,7 +14,7 @@
         <h1 class="font-bold text-3xl">Muse Player</h1>
         <div>
             <div class="flex gap-4 p-4 items-center">
-                <input type="file" id="file-uploader" name="file-uploader" accept="audio/*" multiple
+                <input type="file" id="file-uploader" name="file-uploader" accept="audio/*, audio/mpeg, audio/flac, audio/mp3" multiple
                     onchange="filesChanged()" style="display: none;" />
                 <input type="button" value='Upload Music' onclick="document.getElementById('file-uploader').click()"
                     class="p-4 rounded-xl bg-blue-200" />
