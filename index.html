@@ -63,7 +63,7 @@
 
         <div id="controls" class="w-full flex items-center p-4">
             <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()"
-                preload="metadata" onended="nextSong()">
+                preload="metadata" onended="seekForward()">
             </audio>
             <div class="w-full flex gap-4 p-4 justify-center">
                 <button onclick="seekBack()" class="rounded-lg bg-blue-200 p-2">

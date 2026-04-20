@@ -1,12 +1,14 @@
-
+// File input handler
 const fileInput = document.getElementById('file-uploader')
 
+// Main audio API controller
 const audioController = document.getElementById('audio-controller')
 
 // Volume slider and icon
 const volumeIcon = document.getElementById('volume-icon')
 const volumeController = document.getElementById('volume')
 
+// Used to show the queue and what's playing
 const nowPlaying = document.getElementById('now-playing')
 const playingNext = document.getElementById('playing-next')
 
@@ -16,9 +18,11 @@ const time = document.getElementById('time')
 const slider = document.getElementById('slider')
 const duration = document.getElementById('duration')
 
+// Used for controlling playback speed
 const speed = document.getElementById('speed')
 const speedLabel = document.getElementById('speed-label')
 
+// Icons used for the UI
 const playIcon = `
 <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
     <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/>
@@ -57,6 +61,7 @@ const volumeMaxIcon = `
 </svg>
 `
 
+// Basic song class/object to hold data
 class Song {
     constructor(file) {
         this.name = file.name
@@ -64,22 +69,18 @@ class Song {
     }
 }
 
+/** List of all songs loaded */
 var songs = []
+/** Current index of song being played */
 var songNo = 0
+/** State for handling playing and pausing */
 var playing = false
-var repeat = 0
 
+/** Last set volume before muting */
 var setVolume = 50
 var muted = false
 
-function loadUI() {
-    nowPlaying.innerHTML = `Now playing: ${songs[songNo].name}`
-    playingNext.innerHTML = ""
-    for (let song = songNo + 1; song < songs.length; song++) {
-        playingNext.appendChild(SongItem(songs[song].name, song))
-    }
-}
-
+/** Used to create a list item for the queue */
 function SongItem(name, number) {
     li = document.createElement('li')
     li.innerHTML = name
@@ -87,6 +88,16 @@ function SongItem(name, number) {
     return li
 }
 
+/** Load the UI for the queue */
+function loadQueueUI() {
+    nowPlaying.innerHTML = `Now playing: ${songs[songNo].name}`
+    playingNext.innerHTML = ""
+    for (let song = songNo + 1; song < songs.length; song++) {
+        playingNext.appendChild(SongItem(songs[song].name, song))
+    }
+}
+
+/** Main function that handles loading song files and setting up the audio controller */
 function filesChanged() {
     files = fileInput.files
 
@@ -107,6 +118,7 @@ function filesChanged() {
     songNo = 0
 }
 
+/** Callback for handling playing and pausing music */
 function play() {
     if (playing) {
         audioController.pause()
@@ -118,6 +130,7 @@ function play() {
     player.innerHTML = playing ? pauseIcon : playIcon
 }
 
+/** Helper function to shuffle the queue list */
 function shuffleHelper(array) {
     for (let i = array.length - 1; i > 0; i--) {
         // Pick a random index from 0 to i
@@ -128,6 +141,7 @@ function shuffleHelper(array) {
     return array;
 }
 
+/** Callback for shuffling the queue */
 function shuffle() {
     let currentSong = songs.splice(songNo, 1)[0]
 
@@ -145,22 +159,25 @@ function shuffle() {
     nowPlaying.innerHTML = `Now playing: ${songs[0].name}`
 }
 
+/** Seek back function: either starts the song from the beginning or goes to the previous one */
 function seekBack() {
     if (audioController.currentTime < 3) {
         songNo = (--songNo + songs.length) % songs.length
         audioController.setAttribute('src', songs[songNo].url);
-        loadUI()
+        loadQueueUI()
     } else {
         audioController.currentTime = 0;
     }
 }
 
+/** Seek forward function */
 function seekForward() {
     songNo = (++songNo) % songs.length
     audioController.src = songs[songNo].url;
-    loadUI()
+    loadQueueUI()
 }
 
+/** Used for handling the metadata once it loads for the custom controls */
 function handleMetaData() {
     console.log(audioController.duration)
     slider.max = audioController.duration
@@ -168,19 +185,18 @@ function handleMetaData() {
     duration.innerHTML = `${Math.trunc(slider.max / 60).toString().padStart(2, '0')}:${Math.trunc(slider.max % 60).toString().padStart(2, '0')}`
 }
 
+/** Called to update the slider */
 function updateTime() {
     slider.value = audioController.currentTime
     time.innerHTML = `${Math.trunc(slider.value / 60).toString().padStart(2, '0')}:${Math.trunc(slider.value % 60).toString().padStart(2, '0')}`
 }
 
+/** Uses the slider to seek through the song timeline */
 function seek() {
     audioController.currentTime = slider.value
 }
 
-function nextSong() {
-    seekForward()
-}
-
+/** Used to set the volume icon according to its current level */
 function setVolumeIcon(value) {
     muted = false
     if (value > 50) {
@@ -195,6 +211,7 @@ function setVolumeIcon(value) {
     }
 }
 
+/** Callback for adjusting the volume */
 function changeVolume() {
     let value = Number(volumeController.value)
     audioController.volume = value / 100
@@ -202,6 +219,7 @@ function changeVolume() {
     setVolumeIcon(value)
 }
 
+/** Mute button callback */
 function mute() {
     let value = Number(volumeController.value)
     setVolume = value
@@ -217,6 +235,7 @@ function mute() {
     }
 }
 
+/** Used for keyboard controls for audio timeline seeking */
 function seekDiff(diff) {
     slider.value = Number(slider.value) + Number(diff)
     if (slider.value < 0) {
@@ -227,6 +246,7 @@ function seekDiff(diff) {
     seek()
 }
 
+/** Used for keyboard volume controls */
 function volumeDiff(diff) {
     volumeController.value = Number(volumeController.value) + Number(diff)
     if (volumeController.value < 0) {
@@ -257,6 +277,7 @@ document.addEventListener('keydown', (event) => {
     }
 })
 
+/** Callback for changing playback speed */
 function changeSpeed() {
     const speeds = [
         0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0
