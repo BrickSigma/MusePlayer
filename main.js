@@ -66,6 +66,9 @@ var songNo = 0
 var playing = false
 var repeat = 0
 
+var setVolume = 50
+var muted = false
+
 function loadUI() {
     nowPlaying.innerHTML = `Now playing: ${songs[songNo].name}`
     playingNext.innerHTML = ""
@@ -176,9 +179,8 @@ function nextSong() {
     seekForward()
 }
 
-function changeVolume() {
-    let value = Number(volumeController.value)
-    audioController.volume = value / 100
+function setVolumeIcon(value) {
+    muted = false
     if (value > 50) {
         volumeIcon.innerHTML = volumeMaxIcon
     } else if (value > 25) {
@@ -187,5 +189,28 @@ function changeVolume() {
         volumeIcon.innerHTML = volumeQuaterIcon
     } else {
         volumeIcon.innerHTML = volumeMuteIcon
+        muted = true
+    }
+}
+
+function changeVolume() {
+    let value = Number(volumeController.value)
+    audioController.volume = value / 100
+
+    setVolumeIcon(value)
+}
+
+function mute() {
+    let value = Number(volumeController.value)
+    setVolume = value
+
+    if (muted) {
+        muted = false
+        audioController.volume = setVolume / 100
+        setVolumeIcon(setVolume)
+    } else {
+        muted = true
+        volumeIcon.innerHTML = volumeMuteIcon
+        audioController.volume = 0
     }
 }
