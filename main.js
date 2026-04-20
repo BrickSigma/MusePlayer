@@ -4,6 +4,7 @@ const audioController = document.getElementById('audio-controller')
 const nowPlaying = document.getElementById('now-playing')
 const playingNext = document.getElementById('playing-next')
 const player = document.getElementById('player')
+const time = document.getElementById('time')
 const slider = document.getElementById('slider')
 
 class Song {
@@ -117,4 +118,15 @@ function seekForward() {
 
 function handleMetaData() {
     console.log(audioController.duration)
+    slider.max = audioController.duration
+    slider.value = 0
+}
+
+function updateTime() {
+    slider.value = audioController.currentTime
+    time.innerHTML = `${Math.floor(slider.value/60)}:${slider.value%60}`
+}
+
+function seek() {
+    audioController.currentTime = slider.value
 }
