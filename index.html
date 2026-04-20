@@ -31,10 +31,11 @@
 
         <div class="flex gap-4">
             <p id="time">00:00</p>
-            <input type="range" min="0" max="100" value="0" id="slider" class="slider" onchange="seek()">
+            <input type="range" min="0" max="0" value="0" id="slider" class="slider" onchange="seek()">
+            <p id="duration">00:00</p>
         </div>
 
-        <div id="controls" style="display: none;" class="w-full flex items-center">
+        <div id="controls" class="w-full flex items-center">
             <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()" preload="metadata">
             </audio>
             <div class="w-full flex gap-4 p-4 justify-center">

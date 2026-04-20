@@ -6,6 +6,7 @@ const playingNext = document.getElementById('playing-next')
 const player = document.getElementById('player')
 const time = document.getElementById('time')
 const slider = document.getElementById('slider')
+const duration = document.getElementById('duration')
 
 class Song {
     constructor(file) {
@@ -120,11 +121,12 @@ function handleMetaData() {
     console.log(audioController.duration)
     slider.max = audioController.duration
     slider.value = 0
+    duration.innerHTML = `${Math.trunc(slider.max/60).toString().padStart(2, '0')}:${Math.trunc(slider.max%60).toString().padStart(2, '0')}`
 }
 
 function updateTime() {
     slider.value = audioController.currentTime
-    time.innerHTML = `${Math.floor(slider.value/60)}:${slider.value%60}`
+    time.innerHTML = `${Math.trunc(slider.value/60).toString().padStart(2, '0')}:${Math.trunc(slider.value%60).toString().padStart(2, '0')}`
 }
 
 function seek() {
