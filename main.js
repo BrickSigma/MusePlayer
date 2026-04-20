@@ -120,6 +120,10 @@ function filesChanged() {
 
 /** Callback for handling playing and pausing music */
 function play() {
+    if (songs.length === 0) {
+        return
+    }
+
     if (playing) {
         audioController.pause()
     } else {
@@ -273,6 +277,18 @@ document.addEventListener('keydown', (event) => {
         case "ArrowDown":
             event.preventDefault()
             volumeDiff(-10)
+            break
+        case " ":
+            event.preventDefault()
+            play()
+            break
+        case "m":
+            event.preventDefault()
+            mute()
+            break
+        case "M":
+            event.preventDefault()
+            mute()
             break
     }
 })
