@@ -13,5 +13,11 @@ This project was done as part of my Multimedia Applications unit in university, 
 - Playback speed controls
 - Keyboard shortcuts for seeking and changing volume
 
+## Controls
+- `Space` - used for playing/pausing
+- `Left/Right` - seek 5 seconds backwards or forwards in a track
+- `Up/Down` - increase/decrease volume
+- `m` - mute the volume
+
 ## Screenshots
 ![screenshot](images/image.png)
