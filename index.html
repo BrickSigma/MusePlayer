@@ -36,7 +36,8 @@
         </div>
 
         <div id="controls" class="w-full flex items-center">
-            <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()" preload="metadata">
+            <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()" preload="metadata"
+            onended="nextSong()">
             </audio>
             <div class="w-full flex gap-4 p-4 justify-center">
                 <button onclick="seekBack()" class="w-[10%] shrink-0 rounded-lg bg-blue-200"><<</button>

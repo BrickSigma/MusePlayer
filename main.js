@@ -132,3 +132,7 @@ function updateTime() {
 function seek() {
     audioController.currentTime = slider.value
 }
+
+function nextSong() {
+    seekForward()
+}
