@@ -28,13 +28,13 @@
     </div>
 
     <div id="controls" style="display: none;">
-        <audio controls src="" id="audio-controller"></audio>
+        <audio controls src="" id="audio-controller" onplay="play()"></audio>
         <div>
             <button onclick="play()" id="player">Play</button>
             <button>Repeat</button>
             <button onclick="shuffle()">Shuffle</button>
-            <button><<</button>
-            <button>>></button>
+            <button onclick="seekBack()"><<</button>
+            <button onclick="seekForward()">>></button>
         </div>
     </div>
 </body>

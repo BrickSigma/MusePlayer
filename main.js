@@ -14,6 +14,8 @@ class Song {
 
 var songs = []
 var songNo = 0
+var playing = false
+var repeat = 0
 
 function SongItem(name) {
     li = document.createElement('li')
@@ -51,32 +53,55 @@ function filesChanged() {
 }
 
 function play() {
-    audioController.play()
+    if (playing) {
+        audioController.pause()
+    } else {
+        audioController.play()
+    }
+
+    playing = !playing
+    player.innerHTML = playing ? "Pause" : "Play"
 }
 
 function shuffleHelper(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    // Pick a random index from 0 to i
-    const j = Math.floor(Math.random() * (i + 1));
-    // Swap elements using array destructuring
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+    for (let i = array.length - 1; i > 0; i--) {
+        // Pick a random index from 0 to i
+        const j = Math.floor(Math.random() * (i + 1));
+        // Swap elements using array destructuring
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 function shuffle() {
     let currentSong = songs.splice(songNo, 1)[0]
 
     songs = shuffleHelper(songs)
-    
+
     songNo = 0
-    
+
     playingNext.innerHTML = ""
     for (const song of songs) {
         playingNext.appendChild(SongItem(song.name))
     }
 
     songs.unshift(currentSong)
-    
+
     nowPlaying.innerHTML = `Now playing: ${songs[0].name}`
+}
+
+function seekBack() {
+    if (audioController.currentTime < 3) {
+        songNo = (--songNo) % songs.length
+        audioController.setAttribute('src', songs[songNo].url);
+        audioController.play()
+    } else {
+        audioController.currentTime = 0;
+    }
+}
+
+function seekForward() {
+    songNo = (++songNo) % songs.length
+    audioController.setAttribute('src', songs[songNo].url);
+    audioController.play()
 }
