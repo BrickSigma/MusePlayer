@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Muse Player</title>
+    <link rel='stylesheet' href='main.css'>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+</head>
+
+<body>
+    <h1>Muse Player</h1>
+    <div>
+        <div>
+            <h2>Upload your songs:</h2>
+            <input type="file" id="file-uploader" name="file-uploader" accept="audio/*" multiple
+                onchange="filesChanged()" style="display: none;"/>
+            <input type="button" value='Upload' onclick="document.getElementById('file-uploader').click()"/>
+        </div>
+    </div>
+
+    <div>
+        <h3 id="now-playing">Now playing:</h3>
+        <h3>Queue</h3>
+        <ul id="playing-next">
+        </ul>
+    </div>
+
+    <div id="controls" style="display: none;">
+        <audio controls src="" id="audio-controller"></audio>
+        <div>
+            <button onclick="play()" id="player">Play</button>
+            <button>Repeat</button>
+            <button onclick="shuffle()">Shuffle</button>
+            <button><<</button>
+            <button>>></button>
+        </div>
+    </div>
+</body>
+
+<script src="./main.js"></script>
+
+</html>
