@@ -6,29 +6,38 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Muse Player</title>
     <link rel='stylesheet' href='main.css'>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
-    <h1>Muse Player</h1>
+<body class="flex flex-col justify-center items-center w-vw h-dvh">
     <div>
-        <div>
+    <h1 class="font-bold text-3xl">Muse Player</h1>
+    <div>
+        <div class="flex gap-4 p-8 items-center">
             <h2>Upload your songs:</h2>
             <input type="file" id="file-uploader" name="file-uploader" accept="audio/*" multiple
                 onchange="filesChanged()" style="display: none;"/>
-            <input type="button" value='Upload' onclick="document.getElementById('file-uploader').click()"/>
+            <input type="button" value='Upload' onclick="document.getElementById('file-uploader').click()"
+            class="p-4 rounded-xl bg-blue-500"
+            />
         </div>
     </div>
 
     <div>
-        <h3 id="now-playing">Now playing:</h3>
+        <h3 id="now-playing" class="font-semibold">Now playing:</h3>
         <h3>Queue</h3>
         <ul id="playing-next">
         </ul>
     </div>
 
+    <!-- <div class="audio_controls">
+        <p>00:00</p>
+        <input type="range" min="0" max="100" value="0" id="slider" class="slider">
+    </div> -->
+
     <div id="controls" style="display: none;">
-        <audio controls src="" id="audio-controller" onplay="play()"></audio>
+        <audio controls src="" id="audio-controller" onloadedmetadata="handleMetaData()">
+        </audio>
         <div>
             <button onclick="play()" id="player">Play</button>
             <button>Repeat</button>
@@ -36,6 +45,7 @@
             <button onclick="seekBack()"><<</button>
             <button onclick="seekForward()">>></button>
         </div>
+    </div>
     </div>
 </body>
 

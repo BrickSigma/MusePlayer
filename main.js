@@ -4,6 +4,7 @@ const audioController = document.getElementById('audio-controller')
 const nowPlaying = document.getElementById('now-playing')
 const playingNext = document.getElementById('playing-next')
 const player = document.getElementById('player')
+const slider = document.getElementById('slider')
 
 class Song {
     constructor(file) {
@@ -17,7 +18,15 @@ var songNo = 0
 var playing = false
 var repeat = 0
 
-function SongItem(name) {
+function loadUI() {
+    nowPlaying.innerHTML = `Now playing: ${songs[songNo].name}`
+    playingNext.innerHTML = ""
+    for (let song = songNo+1; song < songs.length; song++) {
+        playingNext.appendChild(SongItem(songs[song].name, song))
+    }
+}
+
+function SongItem(name, number) {
     li = document.createElement('li')
     li.innerHTML = name
 
@@ -35,13 +44,11 @@ function filesChanged() {
         return;
     }
 
-    let skip = true
-    for (const file of files) {
-        songs.push(new Song(file))
-        if (!skip) {
-            playingNext.appendChild(SongItem(file.name))
+    for (let i = 0; i < files.length; i++) {
+        songs.push(new Song(files[i]))
+        if (i >= 1) {
+            playingNext.appendChild(SongItem(files[i].name, i))
         }
-        skip = false
     }
 
     nowPlaying.innerHTML = `Now playing: ${songs[0].name}`
@@ -81,8 +88,8 @@ function shuffle() {
     songNo = 0
 
     playingNext.innerHTML = ""
-    for (const song of songs) {
-        playingNext.appendChild(SongItem(song.name))
+    for (const song in songs) {
+        playingNext.appendChild(SongItem(songs[song].name, song))
     }
 
     songs.unshift(currentSong)
@@ -95,6 +102,7 @@ function seekBack() {
         songNo = (--songNo) % songs.length
         audioController.setAttribute('src', songs[songNo].url);
         audioController.play()
+        loadUI()
     } else {
         audioController.currentTime = 0;
     }
@@ -104,4 +112,9 @@ function seekForward() {
     songNo = (++songNo) % songs.length
     audioController.setAttribute('src', songs[songNo].url);
     audioController.play()
+    loadUI()
+}
+
+function handleMetaData() {
+    console.log(audioController.duration)
 }
