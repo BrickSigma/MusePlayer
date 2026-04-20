@@ -1,3 +1,4 @@
+const body = document.getElementById('body')
 const fileInput = document.getElementById('file-uploader')
 const controls = document.getElementById('controls')
 const audioController = document.getElementById('audio-controller')
@@ -7,6 +8,18 @@ const player = document.getElementById('player')
 const time = document.getElementById('time')
 const slider = document.getElementById('slider')
 const duration = document.getElementById('duration')
+
+const playIcon = `
+<svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+    <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/>
+</svg>
+`
+
+const pauseIcon = `
+<svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+    <path d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/>
+</svg>
+`
 
 class Song {
     constructor(file) {
@@ -23,7 +36,7 @@ var repeat = 0
 function loadUI() {
     nowPlaying.innerHTML = `Now playing: ${songs[songNo].name}`
     playingNext.innerHTML = ""
-    for (let song = songNo+1; song < songs.length; song++) {
+    for (let song = songNo + 1; song < songs.length; song++) {
         playingNext.appendChild(SongItem(songs[song].name, song))
     }
 }
@@ -69,7 +82,7 @@ function play() {
     }
 
     playing = !playing
-    player.innerHTML = playing ? "Pause" : "Play"
+    player.innerHTML = playing ? pauseIcon : playIcon
 }
 
 function shuffleHelper(array) {
@@ -121,12 +134,12 @@ function handleMetaData() {
     console.log(audioController.duration)
     slider.max = audioController.duration
     slider.value = 0
-    duration.innerHTML = `${Math.trunc(slider.max/60).toString().padStart(2, '0')}:${Math.trunc(slider.max%60).toString().padStart(2, '0')}`
+    duration.innerHTML = `${Math.trunc(slider.max / 60).toString().padStart(2, '0')}:${Math.trunc(slider.max % 60).toString().padStart(2, '0')}`
 }
 
 function updateTime() {
     slider.value = audioController.currentTime
-    time.innerHTML = `${Math.trunc(slider.value/60).toString().padStart(2, '0')}:${Math.trunc(slider.value%60).toString().padStart(2, '0')}`
+    time.innerHTML = `${Math.trunc(slider.value / 60).toString().padStart(2, '0')}:${Math.trunc(slider.value % 60).toString().padStart(2, '0')}`
 }
 
 function seek() {

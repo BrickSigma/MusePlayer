@@ -9,42 +9,87 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="flex flex-col justify-center items-center w-vw h-dvh">
-    <div class="flex flex-col justify-center items-center">
+<body class="flex flex-col items-center min-w-vw min-h-dvh relative bg-blue-50 p-4 overflow-scroll">
+    <div class="m-auto flex flex-col justify-center items-center">
         <h1 class="font-bold text-3xl">Muse Player</h1>
         <div>
-            <div class="flex gap-4 p-8 items-center">
-                <h2>Upload your songs:</h2>
+            <div class="flex gap-4 p-4 items-center">
                 <input type="file" id="file-uploader" name="file-uploader" accept="audio/*" multiple
                     onchange="filesChanged()" style="display: none;" />
-                <input type="button" value='Upload' onclick="document.getElementById('file-uploader').click()"
+                <input type="button" value='Upload Music' onclick="document.getElementById('file-uploader').click()"
                     class="p-4 rounded-xl bg-blue-200" />
             </div>
         </div>
 
-        <div>
-            <h3 id="now-playing" class="font-semibold">Now playing:</h3>
-            <h3>Queue</h3>
-            <ul id="playing-next">
-            </ul>
+        <h3 id="now-playing" class="font-semibold p-4 text-xl">Now playing:</h3>
+
+        <div class="w-75 h-75 bg-blue-200 m-4 rounded-3xl relative">
+            <svg class="size-42 absolute note-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13" />
+                <path d="m9 9 12-2" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+            </svg>
+
+            <svg class="size-24 absolute note-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="18" r="4" />
+                <path d="M12 18V2l7 4" />
+            </svg>
         </div>
 
-        <div class="flex gap-4">
+        <div class="flex gap-4 p-4">
             <p id="time">00:00</p>
-            <input type="range" min="0" max="0" value="0" id="slider" class="slider" onchange="seek()">
+            <input type="range" min="0" max="0" value="0" id="slider" class="w-75" onchange="seek()">
             <p id="duration">00:00</p>
         </div>
 
-        <div id="controls" class="w-full flex items-center">
-            <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()" preload="metadata"
-            onended="nextSong()">
+        <div id="controls" class="w-full flex items-center p-4">
+            <audio src="" id="audio-controller" onloadedmetadata="handleMetaData()" ontimeupdate="updateTime()"
+                preload="metadata" onended="nextSong()">
             </audio>
             <div class="w-full flex gap-4 p-4 justify-center">
-                <button onclick="seekBack()" class="w-[10%] shrink-0 rounded-lg bg-blue-200"><<</button>
-                <button onclick="play()" id="player" class="w-[25%] shrink-0 rounded-lg bg-blue-200">Play</button>
-                <button onclick="shuffle()" class="w-[25%] shrink-0 rounded-lg bg-blue-200">Shuffle</button>
-                <button onclick="seekForward()" class="w-[10%] shrink-0 rounded-lg bg-blue-200">>></button>
+                <button onclick="seekBack()" class="rounded-lg bg-blue-200 p-2">
+                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19.496 4.136l-12 7a1 1 0 0 0 0 1.728l12 7a1 1 0 0 0 1.504 -.864v-14a1 1 0 0 0 -1.504 -.864z" />
+                        <path
+                            d="M4 4a1 1 0 0 1 .993 .883l.007 .117v14a1 1 0 0 1 -1.993 .117l-.007 -.117v-14a1 1 0 0 1 1 -1z" />
+                    </svg>
+                </button>
+
+                <button onclick="play()" id="player" class="rounded-lg bg-blue-200 p-2">
+                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+                        <path
+                            d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z" />
+                    </svg>
+                </button>
+
+                <button onclick="shuffle()" class="rounded-lg bg-blue-200 p-2">
+                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 4l3 3l-3 3" />
+                        <path d="M18 20l3 -3l-3 -3" />
+                        <path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5" />
+                        <path d="M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3" />
+                    </svg>
+                </button>
+
+                <button onclick="seekForward()" class="rounded-lg bg-blue-200 p-2">
+                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 5v14a1 1 0 0 0 1.504 .864l12 -7a1 1 0 0 0 0 -1.728l-12 -7a1 1 0 0 0 -1.504 .864z" />
+                        <path
+                            d="M20 4a1 1 0 0 1 .993 .883l.007 .117v14a1 1 0 0 1 -1.993 .117l-.007 -.117v-14a1 1 0 0 1 1 -1z" />
+                    </svg>
+                </button>
             </div>
+        </div>
+
+        <div>
+            <h2 class="font-bold">Queue</h2>
+            <ul id="playing-next">
+            </ul>
         </div>
     </div>
 </body>
